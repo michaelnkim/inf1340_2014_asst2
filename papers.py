@@ -17,13 +17,28 @@ import json
 #goes under decide
 with open("example_entries.json", "r") as file_reader:
     file_contents = file_reader.read()
-    test_x = json.loads(file_contents)
+    entries = json.loads(file_contents)
+with open("countries.json", "r") as file_reader:
+    file_contents2 = file_reader.read()
+    countries = json.loads(file_contents2)
 Nx = 0
-for entry in test_x:
-    individual_entry = test_x[Nx]
-    print(individual_entry["entry_reason"])
+
+for entry in entries:
+    individual_entry = entries[Nx]
+    #Individual entries
+    from_country = (individual_entry.get("from")).get("country")
+    #print(from_country)
+    #print(countries.get(from_country))
+    if ((countries.get(from_country)).get("medical_advisory")) != "":
+        print ((countries.get(from_country)).get("medical_advisory"))
+        #return "Quarantine"
+
+    """if "via" in individual_entry:
+        via_country = ((individual_entry.get("via")).get("country"))
+        print((individual_entry.get("via")).get("country"))"""
+
     Nx+=1
-print(individual_entry)
+
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted
