@@ -18,10 +18,16 @@ import json
 with open("example_entries.json", "r") as file_reader:
     file_contents = file_reader.read()
     entries = json.loads(file_contents)
+
 with open("countries.json", "r") as file_reader:
     file_contents2 = file_reader.read()
     countries = json.loads(file_contents2)
 Nx = 0
+
+with open("watchlist.json", "r") as file_reader:
+    file_contents3 = file_reader.read()
+    watchlist = json.loads(file_contents3)
+
 
 for entry in entries:
     individual_entry = entries[Nx]
