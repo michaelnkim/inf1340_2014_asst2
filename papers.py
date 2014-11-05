@@ -14,8 +14,16 @@ __status__ = "Prototype"
 import re
 import datetime
 import json
-
-
+#goes under decide
+with open("example_entries.json", "r") as file_reader:
+    file_contents = file_reader.read()
+    test_x = json.loads(file_contents)
+Nx = 0
+for entry in test_x:
+    individual_entry = test_x[Nx]
+    print(individual_entry["entry_reason"])
+    Nx+=1
+print(individual_entry)
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted
@@ -26,6 +34,7 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
+
     return ["Reject"]
 
 
