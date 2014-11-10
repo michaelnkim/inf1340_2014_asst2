@@ -38,7 +38,7 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
 
-    global decision_list
+
     with open(input_file, "r") as file_reader:
         file_contents = file_reader.read()
         entries = json.loads(file_contents)
@@ -60,24 +60,21 @@ def decide(input_file, watchlist_file, countries_file):
 
         if (check_quarantine(individual_entry, countries)) == True:
             #Checks Quarantine First, if not move on.
-          #  print("Quarantine")
             decision_list.append("Quarantine")
         else:
             if not (check_valid_passport(individual_entry)):
                 #Checks if passport is valid. if valid, moves on.
-           #     print("Reject in Passport Issue")
+                #print("Reject in Passport Issue")
                 decision_list.append("Reject")
             else:
                 if not (check_reason(individual_entry)):
                     #If reason for entry and visa has not matched.
-            #        print("Reject in Visa Issue")
+                    #print("Reject in Visa Issue")
                     decision_list.append("Reject")
                 else:
-                    if (check_watchlist(individual_entry, watchlist)):
-             #           print("Watchlist")
+                    if check_watchlist(individual_entry, watchlist):
                         decision_list.append("Secondary")
                     else:
-              #          print("Accepted")
                         decision_list.append("Accept")
 
     return decision_list
@@ -118,7 +115,8 @@ def valid_name(name):
     :return:
     """
     if type(name) == str:
-        return True
+        if name != "":
+            return True
     else:
         return False
 
@@ -145,8 +143,6 @@ def valid_visa(passport):
     """
     visa_information = passport.get("visa")
     visa_format = re.compile('.{5}-.{5}')
-    print(passport)
-    type(passport)
     visa_code = (visa_information.get("code"))
     visa_date = datetime.datetime.strptime(visa_information.get("date"), "%Y-%m-%d")
     valid_visa_date = datetime.datetime.strptime("2012-11-10", "%Y-%m-%d")
@@ -214,7 +210,7 @@ def check_reason(passport_information):
                 return True
         else:
             return False
-    elif passport_information.get("entry_reason") == "visiting":
+    elif passport_information.get("entry_reason") == "visit":
         if "visa" in passport_information:
             if valid_visa(passport_information):
                 return True
@@ -231,14 +227,11 @@ def check_watchlist(passport_information, watchlist):
     :param watchlist:
     :return: True or False
     """
-
-    if passport_information.get("last_name") in watchlist:
-        if passport_information.get("first_name") in watchlist:
+    for entry in watchlist:
+        if passport_information.get("last_name") == entry.get("last_name"):
+            print (passport_information.get("last_name") + entry.get("last_name"))
             return True
-    elif passport_information.get("passport") in watchlist:
-        return True
-    else:
-        return False
-
-
-decide("example_entries.json", "watchlist.json", "countries.json")
+        elif passport_information.get("passport") == entry.get("passport"):
+            print("Match")
+            return True
+    return False
