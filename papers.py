@@ -15,8 +15,10 @@ import re
 import datetime
 import json
 
-#Please Remember to check Capitalized/uncapitalized does not matter.
-#Please check valid location for quarantine.
+# Please Remember to check Capitalized/uncapitalized does not matter.
+# Please check valid location for quarantine.
+
+
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted.
@@ -36,6 +38,7 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
 
+    global decision_list
     with open(input_file, "r") as file_reader:
         file_contents = file_reader.read()
         entries = json.loads(file_contents)
@@ -48,30 +51,37 @@ def decide(input_file, watchlist_file, countries_file):
         file_contents3 = file_reader.read()
         watchlist = json.loads(file_contents3)
 
-    Nx = 0
-    #Number for For loop
+    decision_list = []
 
-    for entry in entries:
+    for individual_entry in entries:
+
+
         #For loop allows individual entries to be tested from 0 to end of the entries file.
-        individual_entry = entries[Nx]
-        #Individual entries
+
         if (check_quarantine(individual_entry, countries)) == True:
             #Checks Quarantine First, if not move on.
-            return ["Quarantine"]
+          #  print("Quarantine")
+            decision_list.append("Quarantine")
         else:
-            if(check_valid_passport(individual_entry)) != True:
-             #Checks if passport is valid. if valid, moves on.
-                return ["Reject"]
+            if not (check_valid_passport(individual_entry)):
+                #Checks if passport is valid. if valid, moves on.
+           #     print("Reject in Passport Issue")
+                decision_list.append("Reject")
             else:
-                if(check_reason(individual_entry)) == False:
+                if not (check_reason(individual_entry)):
                     #If reason for entry and visa has not matched.
-                    return ["Reject"]
+            #        print("Reject in Visa Issue")
+                    decision_list.append("Reject")
                 else:
-                    if(check_watchlist(individual_entry)) == True:
-                        return ["Secondary"]
+                    if (check_watchlist(individual_entry, watchlist)):
+             #           print("Watchlist")
+                        decision_list.append("Secondary")
                     else:
-                        return ["Accept"]
-        Nx+=1
+              #          print("Accepted")
+                        decision_list.append("Accept")
+
+    return decision_list
+
 
 def valid_passport_format(passport_number):
     """
@@ -87,6 +97,7 @@ def valid_passport_format(passport_number):
     else:
         return False
 
+
 def valid_date_format(date_string):
     """
     Checks whether a date has the format YYYY-mm-dd in numbers
@@ -99,7 +110,20 @@ def valid_date_format(date_string):
     except ValueError:
         return False
 
-def valid_Location(location_place):
+
+def valid_name(name):
+    """
+    Checks if First or Last name is Valid.
+    :param name:
+    :return:
+    """
+    if type(name) == str:
+        return True
+    else:
+        return False
+
+
+def valid_location(location_place):
     """
     checks whether a location has City, Region, and Country code in right format.
     :param location_place:List
@@ -112,19 +136,27 @@ def valid_Location(location_place):
     else:
         return False
 
-def valid_visa(visa_information):
+
+def valid_visa(passport):
     """
     Checks if the visa is valid format and less than two years old.
     :param visa_information:
     :return:
     """
+    visa_information = passport.get("visa")
     visa_format = re.compile('.{5}-.{5}')
+    print(passport)
+    type(passport)
+    visa_code = (visa_information.get("code"))
+    visa_date = datetime.datetime.strptime(visa_information.get("date"), "%Y-%m-%d")
+    valid_visa_date = datetime.datetime.strptime("2012-11-10", "%Y-%m-%d")
 
-    if visa_format.match(visa_information.get("code")):
-        if visa_information.get("date") > datetime.strptime("2012-11-10", "%Y-%m-%d"):
+    if visa_format.match(visa_code):
+        if visa_date > valid_visa_date:
             return True
     else:
         return False
+
 
 def check_quarantine(individual_entry, countries):
     """
@@ -150,20 +182,23 @@ def check_quarantine(individual_entry, countries):
     else:
         return False
 
+
 def check_valid_passport(passport_information):
     """
     Checks if the passport is valid.
     :param passport_information:
     :return: Boolean Value True or False
     """
-
-    if valid_passport_format(passport_information.get("passport")):
-        if valid_date_format(passport_information.get("birth_date")):
-            if valid_Location(passport_information.get("home")):
-                if valid_Location(passport_information.get("from")):
-                    return True
+    if valid_name(passport_information.get("first_name")):
+        if valid_name(passport_information.get("last_name")):
+            if valid_passport_format(passport_information.get("passport")):
+                if valid_date_format(passport_information.get("birth_date")):
+                    if valid_location(passport_information.get("home")):
+                        if valid_location(passport_information.get("from")):
+                            return True
     else:
         return False
+
 
 def check_reason(passport_information):
     """
@@ -174,20 +209,20 @@ def check_reason(passport_information):
     if passport_information.get("entry_reason") == "returning":
         return True
     elif passport_information.get("entry_reason") == "transit":
-        if valid_visa(passport_information.get("visa")) == True:
+        if valid_visa(passport_information):
             return True
         else:
             return False
     elif passport_information.get("entry_reason") == "visiting":
-        if valid_visa(passport_information.get("visa")) == True:
+        if valid_visa(passport_information):
             return True
         else:
             return False
     else:
         return False
 
-def check_watchlist(passport_information, watchlist):
 
+def check_watchlist(passport_information, watchlist):
     """
     Checks watchlist and finds if the person holding the passport is indeed inside the watchlist.
     :param passport_information:
@@ -195,4 +230,13 @@ def check_watchlist(passport_information, watchlist):
     :return: True or False
     """
 
-print(decide("test_returning_citizen.json", "watchlist.json", "countries.json"))
+    if passport_information.get("last_name") in watchlist:
+        if passport_information.get("first_name") in watchlist:
+            return True
+    elif passport_information.get("passport") in watchlist:
+        return True
+    else:
+        return False
+
+
+decide("example_entries.json", "watchlist.json", "countries.json")
