@@ -15,6 +15,8 @@ import re
 import datetime
 import json
 
+#Please Remember to check Capitalized/uncapitalized does not matter.
+#Please check valid location for quarantine.
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted
@@ -71,8 +73,6 @@ def decide(input_file, watchlist_file, countries_file):
                         return ["Accept"]
         Nx+=1
 
-
-
 def valid_passport_format(passport_number):
     """
     Checks whether a passport number is five sets of five alpha-number characters separated by dashes
@@ -87,7 +87,6 @@ def valid_passport_format(passport_number):
     else:
         return False
 
-
 def valid_date_format(date_string):
     """
     Checks whether a date has the format YYYY-mm-dd in numbers
@@ -100,6 +99,12 @@ def valid_date_format(date_string):
     except ValueError:
         return False
 
+def valid_Location(location_place):
+    """
+    checkes whether a location has City, Region, and Country code in right format.
+    :param location_place:List
+    :return:True if valid.
+    """
 def check_quarantine(individual_entry, countries):
     """
     Checks if the traveller should be placed as Quarantine
@@ -125,6 +130,12 @@ def check_quarantine(individual_entry, countries):
         return False
 
 def check_valid_passport(passport_information):
+    #valid_passport_format(passport_information.get("passport"))  == True?
+    #valid_date_format(passport_information.get("birth_date")) == True?
+    #valid_Location(passport_information.get("home"))
+    #valid_Location(passport_information.get("from"))
+    #valid_Location((passport_information.get("via")))
+
     """
     Checks if the passport is valid.
     :param passport_information:
