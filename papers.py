@@ -214,6 +214,7 @@ def check_reason(passport_information):
         else:
             return False
     elif passport_information.get("entry_reason") == "visiting":
+
         if valid_visa(passport_information):
             return True
         else:
