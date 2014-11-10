@@ -209,14 +209,15 @@ def check_reason(passport_information):
     if passport_information.get("entry_reason") == "returning":
         return True
     elif passport_information.get("entry_reason") == "transit":
-        if valid_visa(passport_information):
-            return True
+        if "visa" in passport_information:
+            if valid_visa(passport_information):
+                return True
         else:
             return False
     elif passport_information.get("entry_reason") == "visiting":
-
-        if valid_visa(passport_information):
-            return True
+        if "visa" in passport_information:
+            if valid_visa(passport_information):
+                return True
         else:
             return False
     else:
