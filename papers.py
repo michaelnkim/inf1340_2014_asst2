@@ -137,16 +137,14 @@ def valid_location(location_place):
         return False
 
 
-def valid_visa(passport):
+def valid_visa(visa_information):
     """
     Checks if the visa is valid format and less than two years old.
     :param visa_information:
     :return:
     """
-    visa_information = passport.get("visa")
     visa_format = re.compile('.{5}-.{5}')
-    print(passport)
-    type(passport)
+
     visa_code = (visa_information.get("code"))
     visa_date = datetime.datetime.strptime(visa_information.get("date"), "%Y-%m-%d")
     valid_visa_date = datetime.datetime.strptime("2012-11-10", "%Y-%m-%d")
@@ -209,8 +207,9 @@ def check_reason(passport_information):
     if passport_information.get("entry_reason") == "returning":
         return True
     elif passport_information.get("entry_reason") == "transit":
-        if valid_visa(passport_information):
-            return True
+        if "visa" in passport_information:
+            if valid_visa(passport_information.get("visa")):
+                return True
         else:
             return False
     elif passport_information.get("entry_reason") == "visiting":
@@ -240,4 +239,4 @@ def check_watchlist(passport_information, watchlist):
         return False
 
 
-decide("example_entries.json", "watchlist.json", "countries.json")
+print(decide("example_entries.json", "watchlist.json", "countries.json"))
