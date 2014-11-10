@@ -20,13 +20,9 @@ def test_basic():
     assert decide("test_watchlist.json", "watchlist.json", "countries.json") == ["Secondary"]
     assert decide("test_quarantine.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    with pytest.raises(TypeError):
-        decide()
-
 
 def test_files():
     with pytest.raises(FileNotFoundError):
         decide("test_returning_citizen.json", "", "countries.json")
 
-# add functions for other tests
 

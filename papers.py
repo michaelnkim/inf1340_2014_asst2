@@ -148,17 +148,23 @@ def check_quarantine(individual_entry, countries):
         return False
 
 def check_valid_passport(passport_information):
-    #valid_passport_format(passport_information.get("passport"))  == True?
-    #valid_date_format(passport_information.get("birth_date")) == True?
-    #valid_location(passport_information.get("home"))
-    #valid_location(passport_information.get("from"))
-    #valid_location((passport_information.get("via")))
-
     """
     Checks if the passport is valid.
     :param passport_information:
     :return: Boolean Value True or False
     """
+    if valid_passport_format(passport_information.get("passport")) != True:
+        return False
+    elif valid_date_format(passport_information.get("birth_date")) != True:
+        return False
+    elif valid_location(passport_information.get("home")) != True:
+        return False
+    elif valid_location(passport_information.get("from")) != True:
+        return False
+    elif valid_location (passport_information.get("via")) != True:
+        return False
+    return True
+
 def check_reason(passport_information):
     """
     Checks reason for entry and assign whether visa is valid.
@@ -187,5 +193,6 @@ def check_watchlist(passport_information, watchlist):
     :param watchlist:
     :return: True or False
     """
+
 
 print(decide("test_returning_citizen.json", "watchlist.json", "countries.json"))
