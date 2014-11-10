@@ -18,6 +18,14 @@ import json
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted
+    First, loads the three files.
+    Second, using For loop, separates list of dictionaries into individual dictionary.
+    Third, using the individual passport,
+    Checks the following in order
+        1.Should the person be in "Quarantine" ?
+        2.Should the person be in "Rejected"?
+        3.Should the person be in "Secondary"?
+        4.Should the person be in "Accepted" ?
 
     :param input_file: The name of a JSON formatted file that contains cases to decide
     :param watchlist_file: The name of a JSON formatted file that contains names and passport numbers on a watchlist
@@ -34,17 +42,23 @@ def decide(input_file, watchlist_file, countries_file):
         file_contents2 = file_reader.read()
         countries = json.loads(file_contents2)
 
+    with open(watchlist_file, "r") as file_reader:
+        file_contents3 = file_reader.read()
+        watchlist = json.loads(file_contents3)
+
     Nx = 0
+    #Number for For loop
 
     for entry in entries:
         #For loop allows individual entries to be tested from 0 to end of the entries file.
         individual_entry = entries[Nx]
         #Individual entries
         if (check_quarantine(individual_entry, countries)) == True:
-            #Checks Quarantine First
+            #Checks Quarantine First, if not move on.
             return ["Quarantine"]
         else:
             if(check_valid_passport(individual_entry)) != True:
+             #Checks if passport is valid. if valid, moves on.
                 return ["Reject"]
             else:
                 if(check_reason(individual_entry)) == False:
@@ -53,16 +67,16 @@ def decide(input_file, watchlist_file, countries_file):
                 else:
                     if(check_watchlist(individual_entry)) == True:
                         return ["Secondary"]
-                    else
+                    else:
                         return ["Accept"]
         Nx+=1
 
-    #return ["Reject"]
 
 
 def valid_passport_format(passport_number):
     """
-    Checks whether a pasport number is five sets of five alpha-number characters separated by dashes
+    Checks whether a passport number is five sets of five alpha-number characters separated by dashes
+
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
     """
@@ -95,21 +109,21 @@ def check_quarantine(individual_entry, countries):
     """
 
     from_country = (individual_entry.get("from")).get("country")
-    #print(from_country)
+    #From the dictionary, gets information about the the Country traveller is From.
 
-    #print(countries.get(from_country))
     if ((countries.get(from_country)).get("medical_advisory")) != "":
-        print((countries.get(from_country)).get("medical_advisory"))
         #from country has a Medical Advisory Condition
         return True
+        #True means the country has medical condition and should be in Quarantine.
     elif "via" in individual_entry:
+        #Checks if the country the travller is via may have medical advisory condition.
         via_country = ((individual_entry.get("via")).get("country"))
         if ((countries.get(via_country)).get("medical_advisory")) != "":
-            print(countries.get(via_country)).get("medical_advisory")
             #if via country had a medical advisory condition
             return True
     else:
         return False
+
 def check_valid_passport(passport_information):
     """
     Checks if the passport is valid.
@@ -122,10 +136,13 @@ def check_reason(passport_information):
     :param passport_information:
     :return:True or False
     """
-def check_watchlist(passport_informaiton):
+
+def check_watchlist(passport_information, watchlist):
     """
     Checks watchlist and finds if the person holding the passport is indeed inside the watchlist.
-    :param passport_informaiton:
-    :return:True or False
+    :param passport_information:
+    :param watchlist:
+    :return: True or False
     """
+
 print(decide("test_returning_citizen.json", "watchlist.json", "countries.json"))
