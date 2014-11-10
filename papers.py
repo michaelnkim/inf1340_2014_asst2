@@ -90,6 +90,7 @@ def valid_passport_format(passport_number):
 def valid_date_format(date_string):
     """
     Checks whether a date has the format YYYY-mm-dd in numbers
+    :rtype : object
     :param date_string: date to be checked
     :return: Boolean True if the format is valid, False otherwise
     """
@@ -98,6 +99,8 @@ def valid_date_format(date_string):
         return True
     except ValueError:
         return False
+
+
 
 def valid_location(location_place):
 
@@ -112,6 +115,12 @@ def valid_visa(visa_number):
 
     :param visa_number:
     :return:
+    """
+
+    """ Attempting to compare the current year, with passports, in order to check validity of visa (ie. less than 2 yrs)
+    import datetime
+    datetime.date.year().strftime("%Y-%m-%d")
+    if valid_date_format(date_string)["%Y"]
     """
 
 def check_quarantine(individual_entry, countries):
@@ -141,9 +150,9 @@ def check_quarantine(individual_entry, countries):
 def check_valid_passport(passport_information):
     #valid_passport_format(passport_information.get("passport"))  == True?
     #valid_date_format(passport_information.get("birth_date")) == True?
-    #valid_Location(passport_information.get("home"))
-    #valid_Location(passport_information.get("from"))
-    #valid_Location((passport_information.get("via")))
+    #valid_location(passport_information.get("home"))
+    #valid_location(passport_information.get("from"))
+    #valid_location((passport_information.get("via")))
 
     """
     Checks if the passport is valid.
