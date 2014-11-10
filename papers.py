@@ -231,9 +231,7 @@ def check_watchlist(passport_information, watchlist):
     """
     for entry in watchlist:
         if passport_information.get("last_name") == entry.get("last_name"):
-            print (passport_information.get("last_name") + entry.get("last_name"))
             return True
         elif passport_information.get("passport") == entry.get("passport"):
-            print("Match")
             return True
     return False
