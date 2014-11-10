@@ -100,11 +100,19 @@ def valid_date_format(date_string):
         return False
 
 def valid_Location(location_place):
+
     """
     checkes whether a location has City, Region, and Country code in right format.
     :param location_place:List
     :return:True if valid.
     """
+def valid_visa(visa_number):
+    """
+
+    :param visa_number:
+    :return:
+    """
+
 def check_quarantine(individual_entry, countries):
     """
     Checks if the traveller should be placed as Quarantine
@@ -147,6 +155,20 @@ def check_reason(passport_information):
     :param passport_information:
     :return:True or False
     """
+    if passport_information.get("entry_reason") == "returning":
+        return True
+    elif passport_information.get("entry_reason") == "transit":
+        if valid_visa(passport_information.get("visa")) == True:
+            return True
+        else:
+            return False
+    elif passport_information.get("entry_reason") == "visiting":
+        if valid_visa(passport_information.get("visa")) == True:
+            return True
+        else:
+            return False
+    else:
+        return False
 
 def check_watchlist(passport_information, watchlist):
     """
