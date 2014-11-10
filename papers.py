@@ -99,13 +99,14 @@ def valid_date_format(date_string):
     except ValueError:
         return False
 
-def valid_Location(location_place):
+def valid_location(location_place):
 
     """
-    checkes whether a location has City, Region, and Country code in right format.
+    checks whether a location has City, Region, and Country code in right format.
     :param location_place:List
     :return:True if valid.
     """
+
 def valid_visa(visa_number):
     """
 
@@ -158,12 +159,12 @@ def check_reason(passport_information):
     if passport_information.get("entry_reason") == "returning":
         return True
     elif passport_information.get("entry_reason") == "transit":
-        if valid_visa(passport_information.get("visa")) == True:
+        if valid_visa(passport_information.get("visa")) is True:
             return True
         else:
             return False
     elif passport_information.get("entry_reason") == "visiting":
-        if valid_visa(passport_information.get("visa")) == True:
+        if valid_visa(passport_information.get("visa")) is True:
             return True
         else:
             return False
