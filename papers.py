@@ -162,7 +162,8 @@ def check_quarantine(individual_entry, countries):
     :return: True or False
     """
 
-    from_country = (individual_entry.get("from")).get("country")
+    from_country_raw = (individual_entry.get("from")).get("country")
+    from_country = from_country_raw.upper()
     #From the dictionary, gets information about the the Country traveller is From.
 
     if ((countries.get(from_country)).get("medical_advisory")) != "":
@@ -171,7 +172,8 @@ def check_quarantine(individual_entry, countries):
         #True means the country has medical condition and should be in Quarantine.
     elif "via" in individual_entry:
         #Checks if the traveler is from a via country that may have a medical advisory condition.
-        via_country = ((individual_entry.get("via")).get("country"))
+        via_country_raw = ((individual_entry.get("via")).get("country"))
+        via_country = via_country_raw.upper()
         if ((countries.get(via_country)).get("medical_advisory")) != "":
             #if via country had a medical advisory condition
             return True
