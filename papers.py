@@ -193,6 +193,18 @@ def check_watchlist(passport_information, watchlist):
     :param watchlist:
     :return: True or False
     """
+    for item in watchlist:
+        if passport_information.get("last_name") == item.get("last_name"):
+            return True
+        elif passport_information.get("first_name") == item.get("first_name"):
+            return True
+        elif passport_information.get("passport") == item.get("passport"):
+            return True
+     else:
+         return False
+
+
+
 
 
 print(decide("test_returning_citizen.json", "watchlist.json", "countries.json"))
