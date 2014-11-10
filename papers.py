@@ -100,18 +100,31 @@ def valid_date_format(date_string):
         return False
 
 def valid_Location(location_place):
-
     """
-    checkes whether a location has City, Region, and Country code in right format.
+    checks whether a location has City, Region, and Country code in right format.
     :param location_place:List
     :return:True if valid.
     """
-def valid_visa(visa_number):
-    """
+    if type(location_place.get("city")) == str:
+        if type(location_place.get("region")) == str:
+            if type(location_place.get("region")) == str:
+                return True
+    else:
+        return False
 
-    :param visa_number:
+def valid_visa(visa_information):
+    """
+    Checks if the visa is valid format and less than two years old.
+    :param visa_information:
     :return:
     """
+    visa_format = re.compile('.{5}-.{5}')
+
+    if visa_format.match(visa_information.get("code")):
+        if visa_information.get("date") > datetime.strptime("2012-11-10", "%Y-%m-%d"):
+            return True
+    else:
+        return False
 
 def check_quarantine(individual_entry, countries):
     """
@@ -138,17 +151,20 @@ def check_quarantine(individual_entry, countries):
         return False
 
 def check_valid_passport(passport_information):
-    #valid_passport_format(passport_information.get("passport"))  == True?
-    #valid_date_format(passport_information.get("birth_date")) == True?
-    #valid_Location(passport_information.get("home"))
-    #valid_Location(passport_information.get("from"))
-    #valid_Location((passport_information.get("via")))
-
     """
     Checks if the passport is valid.
     :param passport_information:
     :return: Boolean Value True or False
     """
+
+    if valid_passport_format(passport_information.get("passport")):
+        if valid_date_format(passport_information.get("birth_date")):
+            if valid_Location(passport_information.get("home")):
+                if valid_Location(passport_information.get("from")):
+                    return True
+    else:
+        return False
+
 def check_reason(passport_information):
     """
     Checks reason for entry and assign whether visa is valid.
@@ -171,6 +187,7 @@ def check_reason(passport_information):
         return False
 
 def check_watchlist(passport_information, watchlist):
+
     """
     Checks watchlist and finds if the person holding the passport is indeed inside the watchlist.
     :param passport_information:
