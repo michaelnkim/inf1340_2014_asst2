@@ -19,9 +19,9 @@ import json
 #Please check valid location for quarantine.
 def decide(input_file, watchlist_file, countries_file):
     """
-    Decides whether a traveller's entry into Kanadia should be accepted
+    Decides whether a traveller's entry into Kanadia should be accepted.
     First, loads the three files.
-    Second, using For loop, separates list of dictionaries into individual dictionary.
+    Second, using a For loop, separates list of dictionaries into an individual dictionary.
     Third, using the individual passport,
     Checks the following in order
         1.Should the person be in "Quarantine" ?
@@ -129,7 +129,7 @@ def check_quarantine(individual_entry, countries):
         return True
         #True means the country has medical condition and should be in Quarantine.
     elif "via" in individual_entry:
-        #Checks if the country the travller is via may have medical advisory condition.
+        #Checks if the traveler is from a via country that may have a medical advisory condition.
         via_country = ((individual_entry.get("via")).get("country"))
         if ((countries.get(via_country)).get("medical_advisory")) != "":
             #if via country had a medical advisory condition
