@@ -111,14 +111,17 @@ def valid_location(location_place):
     """
 
 def valid_visa(visa_number):
-
     """
+
     :param visa_number:
     :return:
     """
-    datetime.date.now.strftime("%Y-%m-%d")
-    if valid_date_format(date_string)
 
+    """ Attempting to compare the current year, with passports, in order to check validity of visa (ie. less than 2 yrs)
+    import datetime
+    datetime.date.year().strftime("%Y-%m-%d")
+    if valid_date_format(date_string)["%Y"]
+    """
 
 def check_quarantine(individual_entry, countries):
     """
@@ -191,13 +194,17 @@ def check_watchlist(passport_information, watchlist):
     :return: True or False
     """
     for item in watchlist:
-        if passport_information.get("passport") == item.get("passport"):
+        if passport_information.get("last_name") == item.get("last_name"):
             return True
-        elif passport_information.get("last_name") == item.get("last_name"):
-            if passport_information.get("first_name") == item.get("first_name"):
-                return True
+        elif passport_information.get("first_name") == item.get("first_name"):
+            return True
+        elif passport_information.get("passport") == item.get("passport"):
+            return True
+     else:
+         return False
 
-    return False
+
+
 
 
 print(decide("test_returning_citizen.json", "watchlist.json", "countries.json"))
