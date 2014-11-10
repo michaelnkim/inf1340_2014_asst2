@@ -111,17 +111,14 @@ def valid_location(location_place):
     """
 
 def valid_visa(visa_number):
-    """
 
+    """
     :param visa_number:
     :return:
     """
+    datetime.date.now.strftime("%Y-%m-%d")
+    if valid_date_format(date_string)
 
-    """ Attempting to compare the current year, with passports, in order to check validity of visa (ie. less than 2 yrs)
-    import datetime
-    datetime.date.year().strftime("%Y-%m-%d")
-    if valid_date_format(date_string)["%Y"]
-    """
 
 def check_quarantine(individual_entry, countries):
     """
