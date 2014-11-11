@@ -10,9 +10,6 @@ import re
 import datetime
 import json
 
-# Please Remember to check Capitalized/uncapitalized does not matter.
-# Please check valid location for quarantine.
-
 
 def decide(input_file, watchlist_file, countries_file):
     """
@@ -49,9 +46,7 @@ def decide(input_file, watchlist_file, countries_file):
     decision_list = []
 
     for individual_entry in entries:
-
-
-        #For loop allows individual entries to be tested from 0 to end of the entries file.
+        #For loop allows individual entries to be tested.
 
         if (check_quarantine(individual_entry, countries)) == True:
             #Checks Quarantine First, if not move on.
@@ -59,15 +54,15 @@ def decide(input_file, watchlist_file, countries_file):
         else:
             if not (check_valid_passport(individual_entry)):
                 #Checks if passport is valid. if valid, moves on.
-                #print("Reject in Passport Issue")
                 decision_list.append("Reject")
+
             else:
                 if not (check_reason(individual_entry)):
-                    #If reason for entry and visa has not matched.
-                    #print("Reject in Visa Issue")
+                    #Checks reason for entry, and checks if there is valid visa. Moves on if valid.
                     decision_list.append("Reject")
                 else:
                     if check_watchlist(individual_entry, watchlist):
+                        #Checks if the passport is in watchlist file.
                         decision_list.append("Secondary")
                     else:
                         decision_list.append("Accept")
@@ -106,13 +101,14 @@ def valid_date_format(date_string):
 def valid_name(name):
     """
     Checks if First or Last name is Valid.
-    :param name:
-    :return:
+    :param name:String value from the passport, either Last name or First name
+    :return:Boolean value. True for valid name.
     """
     if type(name) == str:
         if name != "":
             return True
     else:
+
         return False
 
 
