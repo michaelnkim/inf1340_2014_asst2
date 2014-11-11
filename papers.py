@@ -2,13 +2,8 @@
 
 """ Computer-based immigration office for Kanadia """
 
-__author__ = 'Susan Sim'
-__email__ = "ses@drsusansim.org"
-
-__copyright__ = "2014 Susan Si"
-__license__ = "MIT License"
-
-__status__ = "Prototype"
+__author__ = 'Michael Kim and Grant Wheeler'
+__email__ = "michaeln.kim@mail.utoronto.ca, grant.wheeler@mail.utoronto.ca"
 
 # imports one per line
 import re
