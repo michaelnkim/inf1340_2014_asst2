@@ -115,7 +115,7 @@ def valid_name(name):
 def valid_location(location_place):
     """
     checks whether a location has City, Region, and Country code in right format.
-    :param location_place:List
+    :param location_place:List containing three items.
     :return:True if valid.
     """
     if type(location_place.get("city")) == str:
@@ -129,14 +129,16 @@ def valid_location(location_place):
 def valid_visa(passport):
     """
     Checks if the visa is valid format and less than two years old.
-    :param visa_information:
-    :return:
+    :param passport:dictionary
+    :return: true or false
     """
     visa_information = passport.get("visa")
     visa_format = re.compile('.{5}-.{5}')
     visa_code = (visa_information.get("code"))
     visa_date = datetime.datetime.strptime(visa_information.get("date"), "%Y-%m-%d")
+
     valid_visa_date = datetime.datetime.strptime("2012-11-10", "%Y-%m-%d")
+    #2 years ago from Today, 2014-11-10
 
     if visa_format.match(visa_code):
         if visa_date > valid_visa_date:
@@ -175,7 +177,7 @@ def check_quarantine(individual_entry, countries):
 def check_valid_passport(passport_information):
     """
     Checks if the passport is valid.
-    :param passport_information:
+    :param passport_information: dictionary
     :return: Boolean Value True or False
     """
     if valid_name(passport_information.get("first_name")):
@@ -232,8 +234,8 @@ def check_reason(passport_information,countries):
 def check_watchlist(passport_information, watchlist):
     """
     Checks watchlist and finds if the person holding the passport is indeed inside the watchlist.
-    :param passport_information:
-    :param watchlist:
+    :param passport_information: dictionary
+    :param watchlist: list of dictionaries from watchlist.json
     :return: True or False
     """
     for entry in watchlist:
