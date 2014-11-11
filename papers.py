@@ -120,7 +120,7 @@ def valid_location(location_place):
     """
     if type(location_place.get("city")) == str:
         if type(location_place.get("region")) == str:
-            if type(location_place.get("region")) == str:
+            if type(location_place.get("country")) == str:
                 return True
     else:
         return False
@@ -223,6 +223,8 @@ def check_watchlist(passport_information, watchlist):
     """
     for entry in watchlist:
         if passport_information.get("last_name") == entry.get("last_name"):
+            return True
+        elif passport_information.get("first_name") == entry.get("first_name"):
             return True
         elif passport_information.get("passport") == entry.get("passport"):
             return True
