@@ -57,7 +57,7 @@ def decide(input_file, watchlist_file, countries_file):
                 decision_list.append("Reject")
 
             else:
-                if not (check_reason(individual_entry)):
+                if not (check_reason(individual_entry, countries)):
                     #Checks reason for entry, and checks if there is valid visa. Moves on if valid.
                     decision_list.append("Reject")
                 else:
@@ -189,25 +189,32 @@ def check_valid_passport(passport_information):
         return False
 
 
-def check_reason(passport_information):
+def check_reason(passport_information,countries):
     """
-    Checks reason for entry and assign whether visa is valid.
-    :param passport_information:
+    Checks reason for entry, finds whether visa is needed, and checks whether visa is valid.
+    :param passport_information: passport information, list
+    "param countries : list of dictionaries from countries.json file
     :return:True or False
     """
     if passport_information.get("entry_reason") == "returning":
         if (passport_information.get("home")).get("country") == "KAN":
             return True
     elif passport_information.get("entry_reason") == "transit":
-        if "visa" in passport_information:
-            if valid_visa(passport_information):
-                return True
+        passport_country = ((passport_information.get("from")).get("country"))
+        country_from_file = countries.get(passport_country)
+        if country_from_file.get("transit_visa_required") == 1:
+            if "visa" in passport_information:
+                if valid_visa(passport_information):
+                    return True1111111111
         else:
             return False
     elif passport_information.get("entry_reason") == "visit":
-        if "visa" in passport_information:
-            if valid_visa(passport_information):
-                return True
+        passport_country = ((passport_information.get("from")).get("country"))
+        country_from_file = countries.get(passport_country)
+        if country_from_file.get("visitor_visa_required") == 1:
+            if "visa" in passport_information:
+                if valid_visa(passport_information):
+                    return True
         else:
             return False
     else:
