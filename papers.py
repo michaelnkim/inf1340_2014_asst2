@@ -196,7 +196,8 @@ def check_reason(passport_information):
     :return:True or False
     """
     if passport_information.get("entry_reason") == "returning":
-        return True
+        if (passport_information.get("home")).get("country") == "KAN":
+            return True
     elif passport_information.get("entry_reason") == "transit":
         if "visa" in passport_information:
             if valid_visa(passport_information):
