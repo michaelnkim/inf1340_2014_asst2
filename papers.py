@@ -203,20 +203,28 @@ def check_reason(passport_information,countries):
         passport_country = ((passport_information.get("from")).get("country"))
         country_from_file = countries.get(passport_country)
         if country_from_file.get("transit_visa_required") == 1:
+            #If visa is needed, does passport have vis?
             if "visa" in passport_information:
+                #Is visa valid?
                 if valid_visa(passport_information):
-                    return True1111111111
+                    return True
+                else:
+                    return False
         else:
-            return False
+            #if visa is not needed.
+            return True
     elif passport_information.get("entry_reason") == "visit":
         passport_country = ((passport_information.get("from")).get("country"))
         country_from_file = countries.get(passport_country)
+
         if country_from_file.get("visitor_visa_required") == 1:
             if "visa" in passport_information:
                 if valid_visa(passport_information):
                     return True
+                else:
+                    return False
         else:
-            return False
+            return True
     else:
         return False
 
