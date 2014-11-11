@@ -2,11 +2,8 @@
 
 """ Module to test papers.py  """
 
-__author__ = 'Susan Sim'
-__email__ = "ses@drsusansim.org"
-
-__copyright__ = "2014 Susan Sim"
-__license__ = "MIT License"
+__author__ = 'Michael Kim and Grant Wheeler'
+__email__ = "michaeln.kim@mail.utoronto.ca, grant.wheeler@mail.utoronto.ca"
 
 __status__ = "Prototype"
 
@@ -24,7 +21,7 @@ def test_basic():
     assert decide("test_returning_citizen.json", "watchlist.json", "countries.json") == ["Accept", "Accept"]
     assert decide("test_watchlist.json", "watchlist.json", "countries.json") == ["Secondary"]
 
-#    assert decide("test_watchlist2.json", "watchlist.json", "countries.json") == ["Secondary"]
+    #assert decide("test_watchlist2.json", "watchlist.json", "countries.json") == ["Secondary"]
     assert decide("test_quarantine.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
 
